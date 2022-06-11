@@ -1,23 +1,11 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const routers = require('./routers/routes')
-const bodyParser = require('body-parser');
-const app = express();
-const cors = require('cors');
+const http = require('http');
+const app = require('./app');
+const server = http.createServer(app);
 
-app.use(cors())
-app.use(bodyParser.urlencoded({extended: true})) ;
-app.use(express.json());
+const { API_PORT } = process.env;
+const port = process.env.PORT || API_PORT;
 
-mongoose.connect('mongodb://localhost:27017/node_blackend_api', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}, ()=> {
-    console.log('connected to the database')
+//server listening
+server.listen(port, ()=>{
+    console.log(`Server running on port ${port}`);
 })
-
-
-app.use('/api/',routers);
-
-
-app.listen(8000, ()=> console.log('start server'))
